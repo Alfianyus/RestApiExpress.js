@@ -8,15 +8,23 @@ const usersRoutes = require('./routes/users');
 
 const middlewareLogRequest = require('./middleware/logs');
 
+const upload = require('./middleware/multer');
+
 
 
 const app = express();
 
 app.use(middlewareLogRequest);
 app.use(express.json());
+app.use('/assets',express.static('public/images'));
 
 
 app.use('/users', usersRoutes);
+app.use('/upload',upload.single('photo'), (req, res) => {
+    res.json({
+        message: 'Upload berhasil'
+    })
+})
 
 app.listen(PORT, () =>{
     console.log(`Server berhasil di running di port ${PORT}`);
